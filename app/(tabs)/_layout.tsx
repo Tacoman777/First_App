@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons2 from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function TabLayout() {
   return (
@@ -31,7 +32,23 @@ export default function TabLayout() {
         tabBarIcon: ({ color, focused }) => (
           <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24}/>
         ),
-        }} />
+      }} />
+      <Tabs.Screen 
+      name="contact" 
+      options={{ 
+        title: 'Contact',
+        tabBarIcon: ({ color, focused }) => (
+          <Ionicons2 name={focused ? 'email-multiple' : 'email-multiple-outline'} color={color} size={24} />
+        ),
+       }} />
+      <Tabs.Screen 
+      name="account" 
+      options={{ 
+        title: 'Account',
+        tabBarIcon: ({ color, focused }) => (
+          <Ionicons2 name={focused ? 'account-circle' : 'account-circle-outline'} color={color} size={24} />
+        ),
+      }} />
     </Tabs>
   );
 }
