@@ -1,17 +1,21 @@
 //Tutorial Link
 //https://docs.expo.dev/tutorial/create-your-first-app/
 
-import { Text, View,  StyleSheet } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, } from 'react-native';
 import { Link } from 'expo-router';
 import { Image } from 'expo-image';
 
-const PlaceholderImage = require('@/assets/images/jay-gajjar-hVMVcnpM-Y0-unsplash.jpg');
+
+import Button from '@/components/Button';
+
+const PlaceholderImage = require('@/assets/images/Pepperoni Pizza.jpg');
 
 export default function Index() {
   return (
-    <View style={styles.screen}>
+    <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.text}>Home screen</Text>
+        <Text style={styles.header}> Pizza </Text>
+        <Text style={styles.text}> Pizza of the Day </Text>
         
         <Link href="/about" style={styles.button}>
           Go to About screen
@@ -19,27 +23,42 @@ export default function Index() {
         <View style={styles.imageContainer}>
           <Image source={PlaceholderImage} style={styles.image} />
         </View>
+        <View style={styles.footerContainer}>
+          <Button label="Choose a photo" />
+          <Button label="Use this photo" />
+        </View>
       </View>
-    </View>
+    </ScrollView>
+    
+  
     
     
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    height: '100%',
-    backgroundColor: '#000000',
-    
-  },
   container: {
-    
+    height: 1000,
     backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
+    
   },
   text: {
     color: '#fff',
+    
+  },
+  header: {
+    flex: 1,
+    color: '#FFD33D',
+    fontSize: 80,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    fontFamily: 'sans-serif-condensed',
+    textShadowColor: 'red',
+    textShadowOffset: { width: 3, height: 5},
+    textShadowRadius: 5,
+    
   },
   button: {
     fontSize: 20,
@@ -47,12 +66,18 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   imageContainer: {
-    height: '0%',
+    flex: 1.5,
+    backgroundColor: '#fff',
+    
   },
   image: {
-    width: 320,
-    height: 444,
-    borderRadius: 18,
+    width: 400,
+    height: 400,
+    borderRadius: 15,
+  },
+  footerContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
