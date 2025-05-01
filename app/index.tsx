@@ -1,105 +1,83 @@
-import React, {useState} from 'react';
-import { Text, View, ScrollView, StyleSheet, ImageSourcePropType, Modal, Alert, Pressable, Button } from 'react-native';
-import { Link } from 'expo-router';
-import { Image } from 'expo-image';
-import { useEvent } from 'expo';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 
-
-
-const videoSource = require('@/assets/PizzaVideo.mp4');
-const getDay = (day: number): string => {
-  switch (day) {
-    case 0:
-      return 'Pepperoni';
-    case 1:
-      return 'Hawaiian';
-    case 2:
-      return 'Margherita';
-    case 3:
-      return 'Meat Lovers';
-    case 4:
-      return 'Vegetarian';
-    case 5:
-      return 'Cheese';
-    case 6:
-      return 'Alfredo';
-    default:
-      return 'The Best';
-  }
+export default function ContactScreen() {
+  
+  
+  const [email, onChangeEmail] = React.useState('');
+  const [password, onChangePassword] = React.useState('');
+  
+  const [showText, setShowText] = useState(false);
+  const handlePress = () => {
+    setShowText(true);
+  };
+  const hintText = () => {
+    setShowText(false);
+  };
+  
+  const router = useRouter();
+  const checkCredentials = () => {
+    if (email === 'email@gmail.com' && password === 'password1') {
+      router.push('/(tabs)/home');
+      //
+    } else if (email === 'email@gmail.com' && password != 'password1'){
+        Alert.alert('Incorrect Password');
+    } else if (email != 'email@gmail.com'){
+        Alert.alert('Incorrect Email');
+    }
 };
-const dayImages: { [key: number]: ImageSourcePropType } = {
-  0: require('@/assets/images/days/Pepperoni Pizza.jpg'),
-  1: require('@/assets/images/days/Hawaiian Pizza.jpg'),
-  2: require('@/assets/images/days/Margherita Pizza.jpg'),
-  3: require('@/assets/images/days/Meat Lovers Pizza.jpg'),
-  4: require('@/assets/images/days/Vegetarian Pizza.jpg'),
-  5: require('@/assets/images/days/Cheese Pizza.jpg'),
-  6: require('@/assets/images/days/Alfredo Pizza.jpg'),
-};
-const today = new Date();
-const dayMessage = getDay(today.getDay()); // 0 = Sunday, 6 = Saturday
-//Replace the code here         ^ with a number 0-6 to see different days
-const today2 = new Date().getDay();
-const daySource = dayImages[today2];
-//Replace the today2          ^ with a number 0-6 to see different days
-
-export default function Index() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const player = useVideoPlayer(videoSource, player => {
-    player.loop = true;
-    player.play();
-  });
-  const { isPlaying } = useEvent(player, 'playingChange', { isPlaying: player.playing });
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.header}> Pizza App </Text>
-
-        <View style={styles.imageContainer}>
-          <Text style={[styles.pizzaDay, styles.text]}> Pizza of the Day: </Text>
-          <Text style={styles.dayText}>{dayMessage} Pizza</Text>
-          <Image source={daySource} style={styles.image} />
+    <View style={styles.container}>
+      <Text style={[styles.text, styles.head]}>Sign In</Text>
+      <View style={styles.formcontainer}>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeEmail}
+          
+          value={email}
+          placeholder="Enter your email"
+          placeholderTextColor = 'grey'
+          keyboardType="default"
+          selectionColor='#E8E9F3'
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePassword}
+          
+          value={password}
+          placeholder="Enter password"
+          placeholderTextColor = 'grey'
+          keyboardType="default"
+          selectionColor='#E8E9F3'
+        />
+        <View style={[styles.button]}>
+          <Button title="Sign In" onPress={checkCredentials} color='#DD403A' />
         </View>
         
-        
-      </View>
-    </ScrollView>
-    
-  
-    
-    
+        <View style={[styles.button]}>
+          <Button title="Hint" onPress={handlePress} color='#DD403A' />
+        </View>
+        {showText && <Text style={[styles.hintText]}>
+          The correct email and password is email@gmail.com and password1
+        </Text> }
+        </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 1400,
+    flex: 1,
     backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
-    
+  },
+  formcontainer: {
+    width: '100%',
   },
   text: {
-    color: '#E8E9F3',
-    
-  },
-  pizzaDay: {
-    
-    color: '#E8E9F3',
-    fontSize: 30,
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-    fontFamily: 'sans-serif-condensed',
-    textShadowColor: '#DD403A',
-    textShadowOffset: { width: 3, height: 5},
-    textShadowRadius: 5,
-    
-  },
-  dayText: {
-    
     color: '#E8E9F3',
     fontSize: 40,
     fontStyle: 'italic',
@@ -108,128 +86,30 @@ const styles = StyleSheet.create({
     textShadowColor: '#DD403A',
     textShadowOffset: { width: 3, height: 5},
     textShadowRadius: 5,
-    
   },
-  header: {
-    flex: 0.5,
+  hintText: {
     color: '#E8E9F3',
-    fontSize: 80,
+    fontSize: 20,
     fontStyle: 'italic',
     fontWeight: 'bold',
     fontFamily: 'sans-serif-condensed',
     textShadowColor: '#DD403A',
     textShadowOffset: { width: 3, height: 5},
     textShadowRadius: 5,
-    
+    margin: 10,
+  },
+  head: {
+    marginBottom: 50,
   },
   button: {
-    flex: 0.5,
-    fontSize: 20,
-    textDecorationLine: 'underline',
+    margin: 10,
+  },
+  input: {
     color: '#E8E9F3',
-    fontStyle: 'italic',
-    fontWeight: 'bold',
-    fontFamily: 'sans-serif-condensed',
-    textShadowColor: '#DD403A',
-    textShadowOffset: { width: 3, height: 5},
-    textShadowRadius: 5,
-    alignItems: 'flex-end',
-  },
-  imageContainer: {
-    flex: 1.5,
-    
-  },
-  image: {
-    width: 400,
-    height: 400,
-    borderRadius: 15,
-  },
-  footerContainer: {
-    flex: 0.5,
-    alignItems: 'center',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: '#000000',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  schedule: {
-    borderRadius: 20,
+    borderColor: '#E8E9F3',
+    height: 40,
+    margin: 10,
+    borderWidth: 1,
     padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#E8E9F3',
-  },
-  buttonClose: {
-    backgroundColor: '#DD403A',
-  },
-  textStyle: {
-    color: '#000000',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    color: '#E8E9F3',
-    marginBottom: 15,
-    textAlign: 'center',
-  },
-  modalLink: {
-    fontSize: 20,
-    textDecorationLine: 'underline',
-  },
-  buttonContainer: {
-    width: 320,
-    height: 68,
-    marginHorizontal: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 3,
-  },
-  button2: {
-    borderRadius: 10,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  buttonIcon: {
-    paddingRight: 8,
-  },
-  buttonLabel: {
-    color: '#000000',
-    fontSize: 16,
-  },
-  video: {
-    width: 350,
-    height: 275,
-  },
-  controlsContainer: {
-    padding: 10,
-  },
-  videoContainer: {
-    
-    padding: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 50,
   },
 });
-
-
